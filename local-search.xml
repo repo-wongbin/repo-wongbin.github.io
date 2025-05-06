@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>github.io+hexo+fluid搭建个人博客的统计不生效问题处理</title>
+    <link href="/2023/05/16/github-io-hexo-fluid%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%BB%9F%E8%AE%A1%E4%B8%8D%E7%94%9F%E6%95%88%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"/>
+    <url>/2023/05/16/github-io-hexo-fluid%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%BB%9F%E8%AE%A1%E4%B8%8D%E7%94%9F%E6%95%88%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<p>​心血来潮，想用github.io搭建个人博客，度娘上的方案有很多种，最终本着简洁和能用的原则选择了hexo，并且使用了fluid主题，如何搭建就不赘述，可以参考<a href="https://blog.csdn.net/yaorongke/article/details/119089190">《GitHub Pages + Hexo搭建个人博客网站，史上最全教程》</a>或者自行度娘解决。本文记录在搭建过程中遇到的<strong>fluid添加LeanCloud统计功能不生效</strong>问题，其实也都是不熟悉导致的问题，在互联网上也搜寻了好长时间，同时也发现很多同学遇到相同的问题，故此记录一下。</p><ol><li><p>问题1：统计功能请求LeanCloud统计接口报错，提示跨域错误！</p><p>​大概的错误提示就是从github.com域名请求leancloud.cn域名下接口跨域，从原理进行分析一下肯定会提示跨域的问题，需要在服务器端进行设置允许跨域，也就是说需要在leancloud.cn平台处理，但是不知道具体在哪里配置，其实fluid的GitHub仓库早就有人提问过了，如下图所示：</p><p><img src="/img/github-io-hexo-fluid/CopyQ.IuBOlL.png" alt="CopyQ.IuBOlL"></p><p>此时只需要在leancloud.cn平台设置web安全域名即可。</p><p><img src="/img/github-io-hexo-fluid/CopyQ.FlPUMQ.png" alt="CopyQ.FlPUMQ"></p></li><li><p>问题2：统计功能请求LeanCloud统计接口报错，提示401无权限！</p><p>​首先确认401错误码到底是什么意义，是否是我们概念中无权限问题，查看LeanCloud官网的错误码定义，地址：<a href="https://docs.leancloud.cn/sdk/error-code/#401">错误码</a>，说明如下：</p><ul><li>信息 - <code>Unauthorized.</code></li><li>含义 - 未经授权的访问，没有提供 App id，或者 App id 和 App key 校验失败，请检查配置。</li></ul><p>可是再三确认App id 和 App key 完全正确，到此时就非常迷茫了，回头再去思考一下，401无权限是接口访问返回的，参数配置又是完全正确的，那么是否可能是请求的接口地址不对，统计数据接口在哪配置的？于是再去仔细查看用户手册，果然发现leanCloud配置项下server_url未配置，修改配置重新生成文档刷新页面，看到了期望的统计数据了。</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">leancloud:</span><br>    <span class="hljs-attr">app_id:</span> &#123;<span class="hljs-string">你的id</span>&#125;<br>    <span class="hljs-attr">app_key:</span> &#123;<span class="hljs-string">你的key</span>&#125;<br>    <span class="hljs-comment"># REST API 服务器地址，国际版不填</span><br>    <span class="hljs-comment"># Only the Chinese mainland users need to set</span><br>    <span class="hljs-attr">server_url:</span> &#123;<span class="hljs-string">你的REST</span> <span class="hljs-string">API</span> <span class="hljs-string">服务器地址</span>&#125;<br></code></pre></td></tr></table></figure><p><img src="/img/github-io-hexo-fluid/CopyQ.ogyZxB.png" alt="CopyQ.ogyZxB"></p></li><li><p>总结一下</p><p><strong>多思考，多从原理上思考，计算机的原理是固定的，现象都是原理的体现。</strong></p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>日常记录</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>工具</tag>
+      
+      <tag>hexo</tag>
+      
+      <tag>fluid</tag>
+      
+      <tag>LeanCloud</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
